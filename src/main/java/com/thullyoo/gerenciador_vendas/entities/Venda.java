@@ -1,0 +1,28 @@
+package com.thullyoo.gerenciador_vendas.entities;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.util.List;
+import java.util.Set;
+
+@Entity
+@Table(name = "TB_VENDAS")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Venda {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToMany
+    private Set<ProdutoVenda> produtos;
+
+    private Double total;
+}
