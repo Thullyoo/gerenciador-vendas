@@ -26,7 +26,7 @@ public class VariacaoProduto {
 
     private Double valor;
 
-    private Integer quatidade;
+    private Integer quantidade;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "produto_id", nullable = false)
