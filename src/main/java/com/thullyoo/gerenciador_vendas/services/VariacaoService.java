@@ -6,6 +6,7 @@ import com.thullyoo.gerenciador_vendas.entities.Produto;
 import com.thullyoo.gerenciador_vendas.entities.VariacaoProduto;
 import com.thullyoo.gerenciador_vendas.repositories.ProdutoRepository;
 import com.thullyoo.gerenciador_vendas.repositories.VariacaoRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class VariacaoService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Transactional
     public VariacaoResponse registrarVariacao(VariacaoRequest variacaoRequest){
         Optional<Produto> produto = produtoRepository.findByCodigo(variacaoRequest.codigo_produto());
 
