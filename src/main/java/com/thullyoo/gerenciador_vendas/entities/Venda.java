@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -25,4 +27,6 @@ public class Venda {
     private Set<ProdutoVenda> produtos;
 
     private Double total;
+
+    private LocalDateTime horario_de_venda;
 }
