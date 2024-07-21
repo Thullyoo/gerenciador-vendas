@@ -27,4 +27,9 @@ public class VendaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(vendaService.resgatarTodasAsVendas());
     }
 
+    @DeleteMapping("/{venda_id}")
+    public ResponseEntity<Void> deletarVenda(@PathVariable("venda_id") Long id){
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(vendaService.deletarVenda(id));
+    }
+
 }
