@@ -30,4 +30,6 @@ public class ProdutoVenda {
 
     @Column(nullable = false)
     private int quantidade;
+
+    private Double valor_total;
 }
