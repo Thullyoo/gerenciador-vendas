@@ -23,7 +23,7 @@ public class Venda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     private Set<ProdutoVenda> produtos;
 
     private Double total;
