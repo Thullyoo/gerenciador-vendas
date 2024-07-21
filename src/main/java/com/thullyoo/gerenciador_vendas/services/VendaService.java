@@ -67,6 +67,7 @@ public class VendaService {
             produtoVenda.setVariacao(variacaoProduto.get());
             produtoVenda.setVenda(venda);
             produtoVenda.setQuantidade(vendaRequest.variacoes().get(i).quantidade());
+            produtoVenda.setValor_total(valor);
 
             variacaoProduto.get().setQuantidade(variacaoProduto.get().getQuantidade() - vendaRequest.variacoes().get(i).quantidade());
             variacaoRepository.save(variacaoProduto.get());
@@ -86,6 +87,23 @@ public class VendaService {
         }
 
         return new VendaResponse(venda.getId(), produtosVendaResponse, total);
+    }
+
+    public List<VendaResponse> resgatarTodasAsVendas(){
+        List<Venda> vendas = vendaRepository.findAll();
+
+        List<VendaResponse> vendaResponses = new ArrayList<>();
+
+        for (Venda v : vendas){
+            List<VendaProdutoResponse> produtos = new ArrayList<>();
+            v.getProdutos().forEach(produtoVenda -> {
+                produtos.add(new VendaProdutoResponse(produtoVenda.getVariacao().getProduto().getCodigo(), produtoVenda.getVariacao().getProduto().getNome(), produtoVenda.getValor_total(), produtoVenda.getQuantidade(), produtoVenda.getVariacao().getVariacao_id()));
+            });
+            vendaResponses.add(new VendaResponse(v.getId(),produtos, v.getTotal()));
+        }
+
+        return vendaResponses;
+
     }
 
 
