@@ -106,5 +106,14 @@ public class VendaService {
 
     }
 
+    public Void deletarVenda(Long id){
+        Optional<Venda> venda = vendaRepository.findById(id);
+        if (venda.isEmpty()){
+            throw new RuntimeException("Id ou venda não registrada");
+        }
+        vendaRepository.delete(venda.get());
+        return null;
+    }
+
 
 }
