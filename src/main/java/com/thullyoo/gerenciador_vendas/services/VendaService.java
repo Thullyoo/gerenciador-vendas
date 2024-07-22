@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Service
@@ -85,7 +86,7 @@ public class VendaService {
             produtoVendaRepository.save(produtoVenda);
         }
 
-        return new VendaResponse(venda.getId(), produtosVendaResponse, total);
+        return new VendaResponse(venda.getId(), produtosVendaResponse, total, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy, H:m:s")));
     }
 
     public List<VendaResponse> resgatarTodasAsVendas(){
@@ -98,7 +99,7 @@ public class VendaService {
             v.getProdutos().forEach(produtoVenda -> {
                 produtos.add(new VendaProdutoResponse(produtoVenda.getVariacao().getProduto().getCodigo(), produtoVenda.getVariacao().getProduto().getNome(), produtoVenda.getValor_total(), produtoVenda.getQuantidade(), produtoVenda.getVariacao().getVariacao_id()));
             });
-            vendaResponses.add(new VendaResponse(v.getId(),produtos, v.getTotal()));
+            vendaResponses.add(new VendaResponse(v.getId(),produtos, v.getTotal(), v.getHorario_de_venda().format(DateTimeFormatter.ofPattern("dd/MM/yyyy, H:m:s"))));
         }
 
         return vendaResponses;
