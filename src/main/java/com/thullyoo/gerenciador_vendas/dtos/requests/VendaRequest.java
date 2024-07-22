@@ -1,4 +1,4 @@
-package com.thullyoo.gerenciador_vendas.dtos;
+package com.thullyoo.gerenciador_vendas.dtos.requests;
 
 import java.util.List;
 

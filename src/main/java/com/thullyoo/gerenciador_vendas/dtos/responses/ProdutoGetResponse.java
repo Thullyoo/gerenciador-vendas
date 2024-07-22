@@ -1,4 +1,4 @@
-package com.thullyoo.gerenciador_vendas.dtos;
+package com.thullyoo.gerenciador_vendas.dtos.responses;
 
 import java.util.List;
 
