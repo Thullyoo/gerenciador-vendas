@@ -1,7 +1,7 @@
 package com.thullyoo.gerenciador_vendas.controllers;
 
-import com.thullyoo.gerenciador_vendas.dtos.VariacaoRequest;
-import com.thullyoo.gerenciador_vendas.dtos.VariacaoResponse;
+import com.thullyoo.gerenciador_vendas.dtos.requests.VariacaoRequest;
+import com.thullyoo.gerenciador_vendas.dtos.responses.VariacaoResponse;
 import com.thullyoo.gerenciador_vendas.services.VariacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

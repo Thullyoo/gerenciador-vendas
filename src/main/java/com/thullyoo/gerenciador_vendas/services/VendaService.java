@@ -1,9 +1,8 @@
 package com.thullyoo.gerenciador_vendas.services;
 
-import com.thullyoo.gerenciador_vendas.dtos.VariacaoResponse;
-import com.thullyoo.gerenciador_vendas.dtos.VendaProdutoResponse;
-import com.thullyoo.gerenciador_vendas.dtos.VendaRequest;
-import com.thullyoo.gerenciador_vendas.dtos.VendaResponse;
+import com.thullyoo.gerenciador_vendas.dtos.responses.VendaProdutoResponse;
+import com.thullyoo.gerenciador_vendas.dtos.requests.VendaRequest;
+import com.thullyoo.gerenciador_vendas.dtos.responses.VendaResponse;
 import com.thullyoo.gerenciador_vendas.entities.Produto;
 import com.thullyoo.gerenciador_vendas.entities.ProdutoVenda;
 import com.thullyoo.gerenciador_vendas.entities.VariacaoProduto;
@@ -106,6 +105,7 @@ public class VendaService {
 
     }
 
+    @Transactional
     public Void deletarVenda(Long id){
         Optional<Venda> venda = vendaRepository.findById(id);
         if (venda.isEmpty()){

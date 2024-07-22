@@ -1,7 +1,7 @@
 package com.thullyoo.gerenciador_vendas.services;
 
-import com.thullyoo.gerenciador_vendas.dtos.VariacaoRequest;
-import com.thullyoo.gerenciador_vendas.dtos.VariacaoResponse;
+import com.thullyoo.gerenciador_vendas.dtos.requests.VariacaoRequest;
+import com.thullyoo.gerenciador_vendas.dtos.responses.VariacaoResponse;
 import com.thullyoo.gerenciador_vendas.entities.Produto;
 import com.thullyoo.gerenciador_vendas.entities.VariacaoProduto;
 import com.thullyoo.gerenciador_vendas.repositories.ProdutoRepository;
