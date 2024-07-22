@@ -1,8 +1,8 @@
 package com.thullyoo.gerenciador_vendas.controllers;
 
-import com.thullyoo.gerenciador_vendas.dtos.ProdutoGetResponse;
-import com.thullyoo.gerenciador_vendas.dtos.ProdutoRequest;
-import com.thullyoo.gerenciador_vendas.dtos.ProdutoResponse;
+import com.thullyoo.gerenciador_vendas.dtos.responses.ProdutoGetResponse;
+import com.thullyoo.gerenciador_vendas.dtos.requests.ProdutoRequest;
+import com.thullyoo.gerenciador_vendas.dtos.responses.ProdutoResponse;
 import com.thullyoo.gerenciador_vendas.services.ProdutoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
