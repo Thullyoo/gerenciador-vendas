@@ -1,6 +1,6 @@
 package com.thullyoo.gerenciador_vendas.repositories;
 
-import com.thullyoo.gerenciador_vendas.entities.Produto;
+import com.thullyoo.gerenciador_vendas.entities.produto_models.Produto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

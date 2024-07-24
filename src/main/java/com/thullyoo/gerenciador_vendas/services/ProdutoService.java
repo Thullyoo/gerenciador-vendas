@@ -4,7 +4,7 @@ import com.thullyoo.gerenciador_vendas.dtos.responses.ProdutoGetResponse;
 import com.thullyoo.gerenciador_vendas.dtos.requests.ProdutoRequest;
 import com.thullyoo.gerenciador_vendas.dtos.responses.ProdutoResponse;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VariacaoResponse;
-import com.thullyoo.gerenciador_vendas.entities.Produto;
+import com.thullyoo.gerenciador_vendas.entities.produto_models.Produto;
 import com.thullyoo.gerenciador_vendas.repositories.ProdutoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;

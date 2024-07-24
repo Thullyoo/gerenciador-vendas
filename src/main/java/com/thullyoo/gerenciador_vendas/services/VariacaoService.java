@@ -2,8 +2,8 @@ package com.thullyoo.gerenciador_vendas.services;
 
 import com.thullyoo.gerenciador_vendas.dtos.requests.VariacaoRequest;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VariacaoResponse;
-import com.thullyoo.gerenciador_vendas.entities.Produto;
-import com.thullyoo.gerenciador_vendas.entities.VariacaoProduto;
+import com.thullyoo.gerenciador_vendas.entities.produto_models.Produto;
+import com.thullyoo.gerenciador_vendas.entities.variacao_produto_models.VariacaoProduto;
 import com.thullyoo.gerenciador_vendas.repositories.ProdutoRepository;
 import com.thullyoo.gerenciador_vendas.repositories.VariacaoRepository;
 import jakarta.transaction.Transactional;
