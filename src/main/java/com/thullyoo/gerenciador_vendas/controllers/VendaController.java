@@ -1,5 +1,6 @@
 package com.thullyoo.gerenciador_vendas.controllers;
 
+import com.thullyoo.gerenciador_vendas.dtos.requests.DataRequest;
 import com.thullyoo.gerenciador_vendas.dtos.requests.VendaRequest;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VendaResponse;
 import com.thullyoo.gerenciador_vendas.services.VendaService;
@@ -8,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -32,4 +35,8 @@ public class VendaController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(vendaService.deletarVenda(id));
     }
 
+    @GetMapping("/data")
+    public ResponseEntity<List<VendaResponse>> resgatarTodasAsVendasPorData(@RequestBody DataRequest data){
+        return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarVendaPorData(data.data()));
+    }
 }
