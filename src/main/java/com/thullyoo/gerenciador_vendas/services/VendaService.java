@@ -1,12 +1,13 @@
 package com.thullyoo.gerenciador_vendas.services;
 
-import com.thullyoo.gerenciador_vendas.dtos.responses.VendaProdutoResponse;
+import com.thullyoo.gerenciador_vendas.dtos.responses.ProdutoVendaResponse;
 import com.thullyoo.gerenciador_vendas.dtos.requests.VendaRequest;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VendaResponse;
-import com.thullyoo.gerenciador_vendas.entities.Produto;
-import com.thullyoo.gerenciador_vendas.entities.ProdutoVenda;
-import com.thullyoo.gerenciador_vendas.entities.VariacaoProduto;
-import com.thullyoo.gerenciador_vendas.entities.Venda;
+import com.thullyoo.gerenciador_vendas.entities.produto_models.Produto;
+import com.thullyoo.gerenciador_vendas.entities.produto_venda_models.ProdutoVenda;
+import com.thullyoo.gerenciador_vendas.entities.produto_venda_models.ProdutoVendaMapper;
+import com.thullyoo.gerenciador_vendas.entities.variacao_produto_models.VariacaoProduto;
+import com.thullyoo.gerenciador_vendas.entities.venda_models.Venda;
 import com.thullyoo.gerenciador_vendas.repositories.ProdutoRepository;
 import com.thullyoo.gerenciador_vendas.repositories.ProdutoVendaRepository;
 import com.thullyoo.gerenciador_vendas.repositories.VariacaoRepository;
@@ -15,6 +16,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -34,6 +36,9 @@ public class VendaService {
     @Autowired
     private ProdutoRepository produtoRepository;
 
+    @Autowired
+    private ProdutoVendaMapper produtoVendaMapper;
+
     @Transactional
     public VendaResponse registrarVenda(VendaRequest vendaRequest){
         Set<ProdutoVenda> produtos = new HashSet<>();
@@ -43,12 +48,16 @@ public class VendaService {
 
         Set<ProdutoVenda> produtoVendas = new HashSet<>();
 
-        List<VendaProdutoResponse> produtosVendaResponse = new ArrayList<>();
+        List<ProdutoVendaResponse> produtosVendaResponse = new ArrayList<>();
 
         for(int i = 0; i < vendaRequest.variacoes().size(); i++){
+
             Optional<VariacaoProduto> variacaoProduto =  variacaoRepository.findById(vendaRequest.variacoes().get(i).variacao_id());
+
             Optional<Produto> produto = produtoRepository.findByCodigo(variacaoProduto.get().getProduto().getCodigo());
+
             Double valor = 0.0;
+
             if (variacaoProduto.isEmpty()){
                 throw new RuntimeException("Variacão não registrada.");
             }
@@ -73,7 +82,7 @@ public class VendaService {
             variacaoRepository.save(variacaoProduto.get());
             produtoVendas.add(produtoVenda);
 
-            produtosVendaResponse.add(new VendaProdutoResponse(produto.get().getCodigo(), produto.get().getNome(),valor,vendaRequest.variacoes().get(i).quantidade(),variacaoProduto.get().getVariacao_id()));
+            produtosVendaResponse.add(produtoVendaMapper.ProdutoVendaToProdutoVendaResponse(produtoVenda, valor));
         }
 
         venda.setTotal(total);
@@ -86,7 +95,7 @@ public class VendaService {
             produtoVendaRepository.save(produtoVenda);
         }
 
-        return new VendaResponse(venda.getId(), produtosVendaResponse, total, LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy, H:m:s")));
+        return new VendaResponse(venda.getId(), produtosVendaResponse, total, formatDate(LocalDateTime.now()));
     }
 
     public List<VendaResponse> resgatarTodasAsVendas(){
@@ -95,11 +104,11 @@ public class VendaService {
         List<VendaResponse> vendaResponses = new ArrayList<>();
 
         for (Venda v : vendas){
-            List<VendaProdutoResponse> produtos = new ArrayList<>();
+            List<ProdutoVendaResponse> produtos = new ArrayList<>();
             v.getProdutos().forEach(produtoVenda -> {
-                produtos.add(new VendaProdutoResponse(produtoVenda.getVariacao().getProduto().getCodigo(), produtoVenda.getVariacao().getProduto().getNome(), produtoVenda.getValor_total(), produtoVenda.getQuantidade(), produtoVenda.getVariacao().getVariacao_id()));
+                produtos.add(produtoVendaMapper.ProdutoVendaToProdutoVendaResponse(produtoVenda, produtoVenda.getValor_total()));
             });
-            vendaResponses.add(new VendaResponse(v.getId(),produtos, v.getTotal(), v.getHorario_de_venda().format(DateTimeFormatter.ofPattern("dd/MM/yyyy, H:m:s"))));
+            vendaResponses.add(new VendaResponse(v.getId(),produtos, v.getTotal(), formatDate(v.getHorario_de_venda())));
         }
 
         return vendaResponses;
@@ -116,5 +125,26 @@ public class VendaService {
         return null;
     }
 
+    public List<VendaResponse> resgatarVendaPorData(String date){
+        LocalDate localDate = LocalDate.parse(date);
+        List<Venda> vendas = vendaRepository.findBySpecificDate(localDate);
+        System.out.println(date);
 
+        if (vendas.isEmpty()){
+            throw new RuntimeException("Não existe vendas nesse dia");
+        }
+
+        List<VendaResponse> vendaResponses = vendas.stream().map(venda -> {
+            return new VendaResponse(venda.getId(), venda.getProdutos().stream().map(produtoVenda -> {
+                return produtoVendaMapper.ProdutoVendaToProdutoVendaResponse(produtoVenda, produtoVenda.getValor_total());
+            }).toList(), venda.getTotal(), formatDate(venda.getHorario_de_venda()));
+        }).toList();
+
+        return vendaResponses;
+
+    }
+
+    private String formatDate(LocalDateTime dateTime){
+        return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy, H:m:s"));
+    }
 }
