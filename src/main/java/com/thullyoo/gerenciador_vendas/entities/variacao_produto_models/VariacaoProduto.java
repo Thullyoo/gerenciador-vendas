@@ -1,5 +1,6 @@
-package com.thullyoo.gerenciador_vendas.entities;
+package com.thullyoo.gerenciador_vendas.entities.variacao_produto_models;
 
+import com.thullyoo.gerenciador_vendas.entities.produto_models.Produto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
