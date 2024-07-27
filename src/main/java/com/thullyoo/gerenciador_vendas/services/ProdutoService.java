@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProdutoService {
@@ -32,6 +33,7 @@ public class ProdutoService {
         System.out.println(produtoRequest.valor_original());
         produto.setValor_original(produtoRequest.valor_original());
         produto.setVariacaoProduto(null);
+        produto.setProduto_ativo(true);
 
         produtoRepository.save(produto);
 
@@ -51,5 +53,13 @@ public class ProdutoService {
         return produtosResponse;
     }
 
+    public void desativarProduto(String codigo){
+        Optional<Produto> produtoOptional = produtoRepository.findByCodigo(codigo);
+        if (produtoOptional.isEmpty()){
+            throw new RuntimeException("Produto não registrado");
+        }
+        produtoOptional.get().setProduto_ativo(false);
+        produtoRepository.save(produtoOptional.get());
+    }
 
 }

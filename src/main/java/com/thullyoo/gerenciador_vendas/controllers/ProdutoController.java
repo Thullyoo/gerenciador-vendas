@@ -28,4 +28,10 @@ public class ProdutoController {
     public ResponseEntity<List<ProdutoGetResponse>> resgatarTodosOsProdutos(){
         return ResponseEntity.status(HttpStatus.OK).body(produtoService.resgatarTodosOsProdutos());
     }
+
+    @DeleteMapping("/{codigo}")
+    public ResponseEntity<Void> desativarProduto(@PathVariable("codigo") String codigo){
+        produtoService.desativarProduto(codigo);
+        return null;
+    }
 }
