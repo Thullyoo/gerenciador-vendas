@@ -54,7 +54,19 @@ public class VendaService {
 
             Optional<VariacaoProduto> variacaoProduto =  variacaoRepository.findById(vendaRequest.variacoes().get(i).variacao_id());
 
+            if (variacaoProduto.isEmpty()){
+                throw new RuntimeException("Produto ou variação não resgistrado");
+            }
+
             Optional<Produto> produto = produtoRepository.findByCodigo(variacaoProduto.get().getProduto().getCodigo());
+
+            if (produto.isEmpty()){
+                throw new RuntimeException("Produto não registrado");
+            }
+
+            if (produto.get().getProduto_ativo() == false){
+                throw new RuntimeException("Produto indisponível");
+            }
 
             Double valor = 0.0;
 
