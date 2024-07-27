@@ -30,5 +30,6 @@ public class Produto {
     @OneToMany(mappedBy = "produto", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<VariacaoProduto> variacaoProduto;
 
+    private Boolean produto_ativo;
 
 }
