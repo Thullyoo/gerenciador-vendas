@@ -34,4 +34,10 @@ public class ProdutoController {
         produtoService.desativarProduto(codigo);
         return null;
     }
+
+    @PutMapping("/{codigo}")
+    public ResponseEntity<Void> ativarProduto(@PathVariable("codigo") String codigo){
+        produtoService.ativarProduto(codigo);
+        return null;
+    }
 }

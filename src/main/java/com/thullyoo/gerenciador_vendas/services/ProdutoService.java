@@ -62,4 +62,12 @@ public class ProdutoService {
         produtoRepository.save(produtoOptional.get());
     }
 
+    public void ativarProduto(String codigo){
+        Optional<Produto> produtoOptional = produtoRepository.findByCodigo(codigo);
+        if (produtoOptional.isEmpty()){
+            throw new RuntimeException("Produto não registrado");
+        }
+        produtoOptional.get().setProduto_ativo(true);
+        produtoRepository.save(produtoOptional.get());
+    }
 }
