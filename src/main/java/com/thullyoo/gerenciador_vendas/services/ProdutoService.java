@@ -47,7 +47,7 @@ public class ProdutoService {
 
         produtos.forEach(produto -> {
             produtosResponse.add(new ProdutoGetResponse(produto.getCodigo(),produto.getNome(), produto.getValor_original(),produto.getVariacaoProduto().stream().map(variacaoProduto -> {
-                return new VariacaoResponse(variacaoProduto.getVariacao_id(), variacaoProduto.getCor(), variacaoProduto.getTamanho(),variacaoProduto.getTamanho(), variacaoProduto.getValor(), variacaoProduto.getQuantidade(), produto.getCodigo());
+                return new VariacaoResponse(variacaoProduto.getVariacao_id(), variacaoProduto.getCor(), variacaoProduto.getTamanho(),variacaoProduto.getSabor(), variacaoProduto.getValor(), variacaoProduto.getQuantidade(), produto.getCodigo());
             }).toList()));
         });
         return produtosResponse;
@@ -69,5 +69,16 @@ public class ProdutoService {
         }
         produtoOptional.get().setProduto_ativo(true);
         produtoRepository.save(produtoOptional.get());
+    }
+
+    public List<ProdutoGetResponse> resgatarProdutosPorCodigoOuNome(String codigoOuNome){
+        List<Produto> produtos = this.produtoRepository.findByNomeOrCodigo(codigoOuNome);
+        List<ProdutoGetResponse> produtosResponse = new ArrayList<>();
+        produtos.forEach(produto -> {
+            produtosResponse.add(new ProdutoGetResponse(produto.getCodigo(),produto.getNome(), produto.getValor_original(),produto.getVariacaoProduto().stream().map(variacaoProduto -> {
+                return new VariacaoResponse(variacaoProduto.getVariacao_id(), variacaoProduto.getCor(), variacaoProduto.getTamanho(),variacaoProduto.getSabor(), variacaoProduto.getValor(), variacaoProduto.getQuantidade(), produto.getCodigo());
+            }).toList()));
+        });
+        return produtosResponse;
     }
 }
