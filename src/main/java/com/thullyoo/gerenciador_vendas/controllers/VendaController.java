@@ -15,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/vendas")
+@CrossOrigin(origins = "http://localhost:4200")
 public class VendaController {
 
     @Autowired
@@ -27,7 +28,7 @@ public class VendaController {
 
     @GetMapping
     public ResponseEntity<List<VendaResponse>> resgatarTodasAsVendas(){
-        return ResponseEntity.status(HttpStatus.FOUND).body(vendaService.resgatarTodasAsVendas());
+        return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarTodasAsVendas());
     }
 
     @DeleteMapping("/{venda_id}")
@@ -35,7 +36,7 @@ public class VendaController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).body(vendaService.deletarVenda(id));
     }
 
-    @GetMapping("/data")
+    @PostMapping("/data")
     public ResponseEntity<List<VendaResponse>> resgatarTodasAsVendasPorData(@RequestBody DataRequest data){
         return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarVendaPorData(data.data()));
     }
