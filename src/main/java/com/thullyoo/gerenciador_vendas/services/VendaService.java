@@ -2,6 +2,8 @@ package com.thullyoo.gerenciador_vendas.services;
 
 import com.thullyoo.gerenciador_vendas.dtos.responses.ProdutoVendaResponse;
 import com.thullyoo.gerenciador_vendas.dtos.requests.VendaRequest;
+import com.thullyoo.gerenciador_vendas.dtos.responses.RelatorioResponse;
+import com.thullyoo.gerenciador_vendas.dtos.responses.VendaRelatorioResponse;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VendaResponse;
 import com.thullyoo.gerenciador_vendas.entities.produto_models.Produto;
 import com.thullyoo.gerenciador_vendas.entities.produto_venda_models.ProdutoVenda;
@@ -156,7 +158,32 @@ public class VendaService {
 
     }
 
+
+    public RelatorioResponse resgatarRelatorioDia(){
+
+        List<Venda> vendasDoDia = this.vendaRepository.findVendasForToday();
+
+        List<VendaRelatorioResponse> vendasResponse = new ArrayList<>();
+
+        if (vendasDoDia.isEmpty()){
+            throw new RuntimeException("Nenhuma venda feita no dia");
+        }
+        Double valor_total = 0.0;
+        int numero_de_vendas = vendasDoDia.size();
+        System.out.println(numero_de_vendas);
+        for (Venda venda : vendasDoDia){
+            valor_total += venda.getTotal();
+            vendasResponse.add(venda.vendaToVendaRelatorio(venda));
+        }
+
+
+
+        return new RelatorioResponse(numero_de_vendas, valor_total,vendasResponse);
+    }
+
     private String formatDate(LocalDateTime dateTime){
         return dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy, H:m:s"));
     }
+
+
 }

@@ -16,4 +16,6 @@ public interface VendaRepository extends JpaRepository<Venda, Long> {
     @Query(value = "SELECT * FROM tb_vendas WHERE DATE(horario_de_venda) = DATE(:dataEspecifica)", nativeQuery = true)
     List<Venda> findBySpecificDate(@Param("dataEspecifica") LocalDate dataEspecifica);
 
+    @Query(value = "SELECT * FROM tb_vendas WHERE DATE(horario_de_venda) = CURRENT_DATE", nativeQuery = true)
+    List<Venda> findVendasForToday();
 }

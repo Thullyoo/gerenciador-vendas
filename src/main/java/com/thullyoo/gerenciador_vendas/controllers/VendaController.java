@@ -2,6 +2,7 @@ package com.thullyoo.gerenciador_vendas.controllers;
 
 import com.thullyoo.gerenciador_vendas.dtos.requests.DataRequest;
 import com.thullyoo.gerenciador_vendas.dtos.requests.VendaRequest;
+import com.thullyoo.gerenciador_vendas.dtos.responses.RelatorioResponse;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VendaResponse;
 import com.thullyoo.gerenciador_vendas.services.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,5 +40,10 @@ public class VendaController {
     @PostMapping("/data")
     public ResponseEntity<List<VendaResponse>> resgatarTodasAsVendasPorData(@RequestBody DataRequest data){
         return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarVendaPorData(data.data()));
+    }
+
+    @GetMapping("/relatorio")
+    public ResponseEntity<RelatorioResponse> resgatarRelatorioDoDia(){
+        return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarRelatorioDia());
     }
 }
