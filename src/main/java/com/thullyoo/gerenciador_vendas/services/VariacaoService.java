@@ -1,5 +1,6 @@
 package com.thullyoo.gerenciador_vendas.services;
 
+import com.thullyoo.gerenciador_vendas.dtos.requests.VariacaoPatchRequest;
 import com.thullyoo.gerenciador_vendas.dtos.requests.VariacaoRequest;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VariacaoResponse;
 import com.thullyoo.gerenciador_vendas.entities.produto_models.Produto;
@@ -40,6 +41,35 @@ public class VariacaoService {
 
         return new VariacaoResponse(variacao.getVariacao_id(),variacao.getCor(),variacao.getTamanho(),variacao.getSabor(),variacao.getValor(),variacao.getQuantidade(),variacaoRequest.codigo_produto());
 
+    }
+
+    @Transactional
+    public VariacaoResponse atualizarVariacao(Long id, VariacaoPatchRequest variacaoRequest){
+        Optional<VariacaoProduto> variacao = this.variacaoRepository.findById(id);
+
+        if (variacao.isEmpty()){
+            throw new RuntimeException("Variação não encontrada");
+        }
+
+        if (variacaoRequest.cor() != null && variacaoRequest.cor() != ""){
+            variacao.get().setCor(variacaoRequest.cor());
+        }
+        if (variacaoRequest.quantidade() != null && variacaoRequest.quantidade() != 0){
+            variacao.get().setQuantidade(variacaoRequest.quantidade());
+        }
+        if (variacaoRequest.sabor() != null && variacaoRequest.sabor() != ""){
+            variacao.get().setSabor(variacaoRequest.sabor());
+        }
+        if (variacaoRequest.tamanho() != null && variacaoRequest.tamanho() != ""){
+            variacao.get().setTamanho(variacaoRequest.tamanho());
+        }
+        if (variacao.get().getValor() != null && variacaoRequest. valor() != 0){
+            variacao.get().setValor(variacaoRequest.valor());
+        }
+        this.variacaoRepository.save(variacao.get());
+
+
+        return new VariacaoResponse(variacao.get().getVariacao_id(),variacao.get().getCor(),variacao.get().getTamanho(),variacao.get().getSabor(),variacao.get().getValor(),variacao.get().getQuantidade(),variacao.get().getProduto().getCodigo());
     }
 
 }

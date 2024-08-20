@@ -1,5 +1,6 @@
 package com.thullyoo.gerenciador_vendas.controllers;
 
+import com.thullyoo.gerenciador_vendas.dtos.requests.VariacaoPatchRequest;
 import com.thullyoo.gerenciador_vendas.dtos.requests.VariacaoRequest;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VariacaoResponse;
 import com.thullyoo.gerenciador_vendas.services.VariacaoService;
@@ -19,5 +20,9 @@ public class VariacaoController {
     @PostMapping()
     public ResponseEntity<VariacaoResponse> registrarVariacao(@RequestBody VariacaoRequest variacaoRequest){
         return ResponseEntity.status(HttpStatus.CREATED).body(variacaoService.registrarVariacao(variacaoRequest));
+    }
+    @PatchMapping("/{variacao_id}")
+    public ResponseEntity<VariacaoResponse> atualizarVariacao(@PathVariable Long variacao_id, @RequestBody VariacaoPatchRequest variacaoRequest){
+        return ResponseEntity.status(HttpStatus.OK).body(variacaoService.atualizarVariacao(variacao_id, variacaoRequest));
     }
 }
