@@ -29,7 +29,7 @@ public class VendaController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<VendaResponse>> resgatarTodasAsVendas(@RequestParam(defaultValue = "0") int pagina, @RequestParam(defaultValue = "10") int tamanho){
+    public ResponseEntity<Page<VendaResponse>> resgatarTodasAsVendas(@RequestParam(defaultValue = "0") int pagina, @RequestParam(defaultValue = "8") int tamanho){
         return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarTodasAsVendas(pagina,tamanho));
     }
 
