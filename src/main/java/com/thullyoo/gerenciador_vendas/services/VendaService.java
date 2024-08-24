@@ -14,6 +14,7 @@ import com.thullyoo.gerenciador_vendas.repositories.ProdutoVendaRepository;
 import com.thullyoo.gerenciador_vendas.repositories.VariacaoRepository;
 import com.thullyoo.gerenciador_vendas.repositories.VendaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class VendaService {
@@ -111,21 +114,21 @@ public class VendaService {
         return new VendaResponse(venda.getId(), produtosVendaResponse, total, formatDate(LocalDateTime.now()));
     }
 
-    public List<VendaResponse> resgatarTodasAsVendas(){
-        List<Venda> vendas = vendaRepository.findAll();
+    public Page<VendaResponse> resgatarTodasAsVendas(int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        Page<Venda> vendas = vendaRepository.findAll(pageable);
 
-        List<VendaResponse> vendaResponses = new ArrayList<>();
+        List<VendaResponse> vendaResponses = vendas.getContent().stream()
+                .map(v -> {
+                    List<ProdutoVendaResponse> produtos = v.getProdutos().stream()
+                            .map(produtoVenda -> produtoVendaMapper.ProdutoVendaToProdutoVendaResponse(produtoVenda, produtoVenda.getValor_total()))
+                            .collect(Collectors.toList());
 
-        for (Venda v : vendas){
-            List<ProdutoVendaResponse> produtos = new ArrayList<>();
-            v.getProdutos().forEach(produtoVenda -> {
-                produtos.add(produtoVendaMapper.ProdutoVendaToProdutoVendaResponse(produtoVenda, produtoVenda.getValor_total()));
-            });
-            vendaResponses.add(new VendaResponse(v.getId(),produtos, v.getTotal(), formatDate(v.getHorario_de_venda())));
-        }
+                    return new VendaResponse(v.getId(), produtos, v.getTotal(), formatDate(v.getHorario_de_venda()));
+                })
+                .collect(Collectors.toList());
 
-        return vendaResponses;
-
+        return new PageImpl<>(vendaResponses, pageable, vendas.getTotalElements());
     }
 
     @Transactional

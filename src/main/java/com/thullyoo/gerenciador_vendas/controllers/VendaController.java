@@ -6,6 +6,7 @@ import com.thullyoo.gerenciador_vendas.dtos.responses.RelatorioResponse;
 import com.thullyoo.gerenciador_vendas.dtos.responses.VendaResponse;
 import com.thullyoo.gerenciador_vendas.services.VendaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,8 +29,8 @@ public class VendaController {
     }
 
     @GetMapping
-    public ResponseEntity<List<VendaResponse>> resgatarTodasAsVendas(){
-        return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarTodasAsVendas());
+    public ResponseEntity<Page<VendaResponse>> resgatarTodasAsVendas(@RequestParam(defaultValue = "0") int pagina, @RequestParam(defaultValue = "10") int tamanho){
+        return ResponseEntity.status(HttpStatus.OK).body(vendaService.resgatarTodasAsVendas(pagina,tamanho));
     }
 
     @DeleteMapping("/{venda_id}")
